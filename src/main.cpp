@@ -1,6 +1,8 @@
 #include "raylib.h"
 #include "Math.h"
 
+const int LEGS_COUNT = 4;
+
 class Table
 {
 public:
@@ -8,22 +10,17 @@ public:
     float width, height;
     float weight;
     float legWidth, legHeight;
-    int legs;
+    float legs[LEGS_COUNT];
     Color legsColor, topColor;
 
     void Draw()
     {
-        // Top of Table
-
-        float spacing = width / (legs - 1);
-
-        float legX = x;
         //DrawRectangle(legX, y, legWidth, legHeight, legsColor);
-        for (int i = 0; i < legs; i++)
+        for (int i = 0; i < LEGS_COUNT; i++)
         {
-            DrawRectangle(legX, y, legWidth, legHeight, legsColor);
-            legX += spacing;
+            DrawRectangle(legs[i], y, legWidth, legHeight, legsColor);
         }
+        // Top of Table
         DrawRectangle(x, y, width, height, topColor);
     }
 };
@@ -51,15 +48,18 @@ int main()
     woodTable.y = screenHeight * 0.75f - woodTable.height;
     woodTable.legsColor = BROWN;
     woodTable.topColor = GRAY;
-    woodTable.legs = 4;
     woodTable.legWidth = 10.0f;
     woodTable.legHeight = woodTable.height * 3.0f;
+
+    woodTable.legs[0] = woodTable.x;
+    woodTable.legs[1] = woodTable.x + woodTable.legWidth * 3.0f;
+
+    woodTable.legs[2] = woodTable.x + woodTable.width - woodTable.legWidth * 3.0f;
+    woodTable.legs[3] = woodTable.x + woodTable.width - woodTable.legWidth;
 
     float radius = 25.0f;
     Vector2 position{ screenWidth * 0.5f, screenHeight * 0.5f };
     Vector2 velocity{ Random(-10.0f, 10.0f), Random(-10.0f, 10.0f) };
-
-    const char* character = "fhwiuefhwuefhiuw";
 
     while (!WindowShouldClose())
     {
@@ -73,7 +73,7 @@ int main()
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        DrawText(character, 10, 10, 20, BURGUNDY);
+        DrawText("Text", 10, 10, 20, BURGUNDY);
         DrawCircleV(position, radius, CHARTREUSE);
         woodTable.Draw();
         EndDrawing();
