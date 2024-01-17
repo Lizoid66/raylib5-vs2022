@@ -1,7 +1,5 @@
 #include "raylib.h"
 #include "Math.h"
-#include <iostream>
-using namespace std;
 
 const int LEGS_COUNT = 4;
 
@@ -12,10 +10,10 @@ public:
     float width, height;
     float weight;
     float legWidth, legHeight;
-    float legs[LEGS_COUNT]; // Array must be created with either a integer literal (number) or a constant integer
+    float legs[LEGS_COUNT];
     Color legsColor, topColor;
 
-    void Draw() // Function vs Method. Method is a function that is part of a class. aka has visibility (public, private,...)
+    void Draw()
     {
         //DrawRectangle(legX, y, legWidth, legHeight, legsColor);
         for (int i = 0; i < LEGS_COUNT; i++)
@@ -28,10 +26,10 @@ public:
 };
 
 
-//Vector2 Seek(Vector2 target, Vector2 position, Vector2 velocity, float speed)
-//{
-//    return Normalize(target - position) * speed - velocity;
-//}
+Vector2 Seek(Vector2 target, Vector2 position, Vector2 velocity, float speed)
+{
+    return Normalize(target - position) * speed - velocity;
+}
 
 int main()
 {
@@ -39,8 +37,8 @@ int main()
 
     const int screenWidth = 1280;
     const int screenHeight = 720;
-    /*InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
-    SetTargetFPS(60);*/
+    InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+    SetTargetFPS(60);
 
     Table woodTable;
 
@@ -59,34 +57,28 @@ int main()
     woodTable.legs[2] = woodTable.x + woodTable.width - woodTable.legWidth * 3.0f;
     woodTable.legs[3] = woodTable.x + woodTable.width - woodTable.legWidth;
 
-    int integers[10]{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-    for (int i = 0; i < 10; i++)
+    float radius = 25.0f;
+    Vector2 position{ screenWidth * 0.5f, screenHeight * 0.5f };
+    Vector2 velocity{ Random(-10.0f, 10.0f), Random(-10.0f, 10.0f) };
+
+    while (!WindowShouldClose())
     {
-        cout << integers[i] << endl;
+        /*float dt = GetFrameTime();
+        Vector2 mouse = GetMousePosition();
+        velocity = velocity + Seek(mouse, position, velocity, 1000.0f) * dt;
+        position = position + velocity * dt;
+
+        if (CheckCollisionPointCircle(mouse, position, radius))
+            break;*/
+
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        DrawText("Text", 10, 10, 20, BURGUNDY);
+        DrawCircleV(position, radius, CHARTREUSE);
+        woodTable.Draw();
+        EndDrawing();
     }
 
-    /*float radius = 25.0f;
-    Vector2 position{ screenWidth * 0.5f, screenHeight * 0.5f };
-    Vector2 velocity{ Random(-10.0f, 10.0f), Random(-10.0f, 10.0f) };*/
-
-    //while (!WindowShouldClose())
-    //{
-    //    /*float dt = GetFrameTime();
-    //    Vector2 mouse = GetMousePosition();
-    //    velocity = velocity + Seek(mouse, position, velocity, 1000.0f) * dt;
-    //    position = position + velocity * dt;
-
-    //    if (CheckCollisionPointCircle(mouse, position, radius))
-    //        break;*/
-
-    //    BeginDrawing();
-    //    ClearBackground(RAYWHITE);
-    //    DrawText("Text", 10, 10, 20, BURGUNDY);
-    //    DrawCircleV(position, radius, CHARTREUSE);
-    //    woodTable.Draw();
-    //    EndDrawing();
-    //}
-
-    //CloseWindow();
+    CloseWindow();
     return 0;
 }
